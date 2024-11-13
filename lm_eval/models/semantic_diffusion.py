@@ -71,21 +71,17 @@ class SemanticDiffusion(LM):
                             self.likelihood,
                             batch,
                             num_samples=self.num_samples,  # number of inner samples in the estimator, higher number has lower bias and variance
-                            show_progress=True,  # turn on/off the progress bar
+                            show_progress=False,  # turn on/off the progress bar
                             return_token_nlls=True,  # set to True to return the token-level nlls
                         )
-
-                # token-averaged NLL and PPL
-                print(metrics["nll"], metrics["ppl"])
 
                 # shape of token_nlls: (batch_size, max_seq_len)
                 # also includes NLL for padding tokens, can be masked like this:
                 non_padding_nll = token_nlls * batch["attention_mask"] 
 
-                print(non_padding_nll)
-                raise ValueError("gaga")
-            # we set the greedy flag to False always
-            res.append((-random.random(), False))
+                # get the NLL per sample
+                nll = non_padding_nll.sum(dim=-1)/batch["attention_mask"].sum(dim=-1)
+                res.extend(nll.cpu().numpy())
         
         return res
 
