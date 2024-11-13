@@ -60,7 +60,7 @@ class SemanticDiffusion(LM):
         
         # create the batches input
         strings = [r.args[0] + r.args[1] for r in requests]
-        batched = [strings[i * self.batch_size:(i + 1) * self.batch_size] for i in range((len(strings) + self.batch_size - 1) // self.batch_size)] 
+        batched = [strings[i:i + self.batch_size] for i in range(0, len(strings), self.batch_size)] 
         with torch.no_grad(), torch.autocast(self.device.type, self.dtype):            
             for batch in tqdm(batched, disable=disable_tqdm):
                 # load a batch
