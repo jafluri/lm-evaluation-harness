@@ -1,5 +1,17 @@
 # Language Model Evaluation Harness
 
+## Semantic Diffusion Model
+
+The model is defined here: `lm_eval/models/semantic_diffusion.py` and can be run via
+
+```bash
+lm_eval --model semantic_diffusion \
+        --model_args model_path="/path/to/checkpoint/",batch_size=1,num_samples=32 \
+        --tasks hellaswag
+```
+
+Only the `loglikelihood` function is implemented.
+
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10256836.svg)](https://doi.org/10.5281/zenodo.10256836)
 
 ---
