@@ -95,6 +95,10 @@ class SemanticDiffusion(LM):
         batched = [strings[i:i + self.batch_size] for i in range(0, len(strings), self.batch_size)] 
         for batch in tqdm(batched, disable=disable_tqdm):
             # load a batch
+            bs = len(batch)
+            if bs < self.batch_size:
+                # pad to make sure we keep the same shape
+                batch += [""] * (self.batch_size - bs)
             batch = self.tokenizer(batch, return_tensors="pt", padding="max_length", truncation=True, max_length=self.config.model.max_seq_len)
             batch = batch.to(self.device)
 
@@ -114,7 +118,9 @@ class SemanticDiffusion(LM):
 
                 # get the NLL per sample
                 nll = non_padding_nll.sum(dim=-1) / batch["attention_mask"].sum(dim=-1)
-                res.extend(nll.cpu().numpy())
+                # remove batch padding
+                nll = nll[:bs]
+                res.extend(nll.cpu().numpy().tolist())
         
         return res
 
