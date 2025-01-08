@@ -114,13 +114,15 @@ class SemanticDiffusion(LM):
 
                 # shape of token_nlls: (batch_size, max_seq_len)
                 # also includes NLL for padding tokens, can be masked like this:
-                non_padding_nll = token_nlls * batch["attention_mask"] 
+                non_padding_nll = token_nlls * batch["attention_mask"]
 
                 # get the NLL per sample
                 nll = non_padding_nll.sum(dim=-1) / batch["attention_mask"].sum(dim=-1)
                 # remove batch padding
                 nll = nll[:bs]
-                res.extend(nll.cpu().numpy().tolist())
+                is_greedy = True
+                for x in nll.cpu().numpy():
+                    res.append((x, is_greedy))
         
         return res
 
