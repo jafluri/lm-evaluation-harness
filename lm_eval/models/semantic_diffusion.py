@@ -120,9 +120,9 @@ class SemanticDiffusion(LM):
                 # get the NLL per sample
                 nll = non_padding_nll.sum(dim=-1) / batch["attention_mask"].sum(dim=-1)
                 # remove batch padding
-                nll = nll[:bs]
+                ll = -nll[:bs]
                 is_greedy = True
-                for x in nll.cpu().numpy():
+                for x in ll.cpu().numpy():
                     res.append((x, is_greedy))
         
         return res
