@@ -102,10 +102,11 @@ def simple_parse_args_string(args_string):
     args_string = args_string.strip()
     if not args_string:
         return {}
-    args_string = args_string.replace("\\=", "{eq}")
     arg_list = [arg for arg in args_string.split(",") if arg]
+    # split on "=" but not on "\="
+    pattern = r"(?<!\\)="
     args_dict = {
-        k: handle_arg_string(v.replace("{eq}", "=")) for k, v in [arg.replace("\\=", "{eq}").split("=") for arg in arg_list]
+        k: handle_arg_string(v) for k, v in [re.split(pattern, arg) for arg in arg_list]
     }
     return args_dict
 
