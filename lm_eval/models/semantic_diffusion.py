@@ -45,6 +45,7 @@ class SemanticDiffusion(LM):
             self._rank = int(os.environ["LOCAL_RANK"])
             self._world_size = int(os.environ["WORLD_SIZE"])
             dist.init_process_group(backend="nccl", rank=self.rank, world_size=self.world_size)
+            torch.cuda.set_device(self.rank)
             self.device = torch.device("cuda", self.rank)
 
         # print the model path
