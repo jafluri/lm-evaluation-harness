@@ -3,6 +3,7 @@ from . import (
     api_models,
     dummy,
     gguf,
+    gidd,
     hf_vlms,
     huggingface,
     ibm_watsonx_ai,
@@ -14,8 +15,7 @@ from . import (
     optimum_lm,
     textsynth,
     vllm_causallms,
-    vllm_vlms,
-    semantic_diffusion 
+    vllm_vlms 
 )
 
 

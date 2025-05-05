@@ -14,16 +14,16 @@ from lm_eval.utils import simple_parse_args_string
 import torch
 import torch.distributed as dist
 
-from semantic_diffusion.utils import parse_dtype
-from semantic_diffusion.loss import get_loss
-from semantic_diffusion.checkpoints import load_checkpoint
-from semantic_diffusion.likelihood import ELBO, compute_elbo, compute_causal_nll
+from gidd.utils import parse_dtype
+from gidd.loss import get_loss
+from gidd.checkpoints import load_checkpoint
+from gidd.likelihood import ELBO, compute_elbo, compute_causal_nll
 
 
 logger = logging.getLogger(__name__)
 
-@register_model("semantic_diffusion")
-class SemanticDiffusion(LM):
+@register_model("gidd")
+class GiddModel(LM):
     def __init__(
         self,
         model_path: str,
